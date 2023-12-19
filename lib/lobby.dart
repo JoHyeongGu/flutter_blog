@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/logo.dart';
 
 class Lobby extends StatefulWidget {
   Lobby(this.router, {super.key});
@@ -26,30 +27,91 @@ class _LobbyState extends State<Lobby> {
       'category': 'third',
       'content': const ThirdContent(),
     },
+    {
+      'index': 3,
+      'category': '네번째 메뉴',
+      'content': const SecondContent(),
+    },
   ];
+  final scrollController = ScrollController();
+  late bool initedPage;
+  bool whiteNoise = false;
+
+  initAnimation() async {
+    initedPage = false;
+    setState(() {});
+    print('page load start');
+    await Future.delayed(const Duration(milliseconds: 1500));
+    print('page load finish');
+    initedPage = true;
+    setState(() {});
+  }
+
+  reload() async {
+    whiteNoise = true;
+    setState(() {});
+    await Future.delayed(const Duration(milliseconds: 50));
+    whiteNoise = false;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initAnimation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.black,
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Container(
-                  height: 100,
+      body: Stack(
+        children: [
+          Container(color: Colors.grey[300]),
+          Column(
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: initedPage
+                    ? MediaQuery.of(context).size.height / 8
+                    : MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
                   color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                Flexible(
-                  child: Container(
-                    color: Colors.blueGrey,
-                  ),
+                child: GestureDetector(
+                  onTap: () {
+                    reload();
+                  },
+                  child: const TitleLogo(),
                 ),
-              ],
-            ),
-            SideMenu(menuList),
-          ],
-        ),
+              ),
+              Flexible(
+                child: Stack(
+                  children: [
+                    Container(
+                      color: Colors.grey[300],
+                      child: const Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 250),
+                          child: Text(
+                            '그림 들어갈 곳',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SideMenu(menuList),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (whiteNoise) Container(color: Colors.white),
+        ],
       ),
     );
   }
@@ -76,6 +138,7 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   Widget build(BuildContext context) {
+    double maxContentWidth = MediaQuery.of(context).size.width / 7;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -84,7 +147,7 @@ class _SideMenuState extends State<SideMenu> {
               .map((menu) => MouseRegion(
                     onEnter: (event) {
                       setState(() {
-                        menuWidth = 200;
+                        menuWidth = maxContentWidth;
                       });
                     },
                     onExit: (event) {
@@ -94,7 +157,7 @@ class _SideMenuState extends State<SideMenu> {
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 100),
-                      color: Colors.grey,
+                      color: Colors.grey.withOpacity(0.5),
                       width: menuWidth,
                       child: index != null && menuWidth != 0
                           ? widget.menuList[index!]['content']
@@ -103,16 +166,16 @@ class _SideMenuState extends State<SideMenu> {
                   ))
               .toList(),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: widget.menuList
-              .map((menu) => Padding(
-                    padding: const EdgeInsets.only(top: 0),
-                    child: MouseRegion(
+        Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widget.menuList
+                .map((menu) => MouseRegion(
                       onEnter: (event) {
                         setState(() {
                           index = menu['index'];
-                          menuWidth = 200;
+                          menuWidth = maxContentWidth;
                         });
                       },
                       onExit: (event) {
@@ -123,22 +186,27 @@ class _SideMenuState extends State<SideMenu> {
                       child: Container(
                         height:
                             menuWidth != 0 && menu['index'] == index ? 40 : 30,
-                        width:
-                            menuWidth != 0 && menu['index'] == index ? 150 : 80,
-                        color: Colors.yellowAccent.withOpacity(0.6),
+                        width: menuWidth != 0 && menu['index'] == index
+                            ? MediaQuery.of(context).size.width / 8
+                            : MediaQuery.of(context).size.width / 10,
+                        decoration: BoxDecoration(
+                          color: Colors.yellowAccent.withOpacity(0.6),
+                          borderRadius: const BorderRadius.horizontal(
+                              right: Radius.circular(5)),
+                        ),
                         child: Center(
                           child: Text(
                             menuWidth != 0 && menu['index'] == index
                                 ? menu['category']
-                                : menu['category'].length >= 6
+                                : menu['category'].length >= 7
                                     ? menu['category'].substring(0, 6) + '...'
                                     : menu['category'],
                           ),
                         ),
                       ),
-                    ),
-                  ))
-              .toList(),
+                    ))
+                .toList(),
+          ),
         ),
       ],
     );
