@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TitleLogo extends StatefulWidget {
-  const TitleLogo({super.key});
+  TitleLogo({super.key, this.animation = false});
+  bool animation;
 
   @override
   State<TitleLogo> createState() => _TitleLogoState();
@@ -26,7 +27,13 @@ class _TitleLogoState extends State<TitleLogo> {
   @override
   void initState() {
     super.initState();
-    initAnimation();
+    if (widget.animation){
+      initAnimation();
+    } else{
+      logoState1 = true;
+      logoState2 = true;
+      setState(() {});
+    }
   }
 
   @override
