@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blog/route.dart';
 import 'package:url_strategy/url_strategy.dart';
 
-void main() {
+void main() async {
+  await initApp();
+  runApp(const MyApp());
+}
+
+initApp () async {
   setPathUrlStrategy();
   Routes.configureRoutes();
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +21,6 @@ class MyApp extends StatelessWidget {
       title: '아홉 페이지',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
-        useMaterial3: true,
       ),
       initialRoute: '/',
       onGenerateRoute: Routes.router.generator,

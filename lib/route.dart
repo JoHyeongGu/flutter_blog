@@ -13,10 +13,10 @@ class Routes {
       handler: Handler(
         handlerFunc: (context, Map<String, dynamic> params) =>
             const TitlePage(),
-      ),
+    ),
     );
     router.define(
-      '/detail/:bc/:c',
+      '/detail',
       handler: Handler(
         handlerFunc: (context, Map<String, dynamic> params) {
           return DetailLobby(params['bc'][0], params['c'][0]);
