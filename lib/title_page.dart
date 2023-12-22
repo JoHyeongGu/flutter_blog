@@ -4,7 +4,8 @@ import 'package:flutter_blog/logo.dart';
 import 'package:flutter_blog/side_menu.dart';
 
 class TitlePage extends StatefulWidget {
-  const TitlePage({super.key});
+  TitlePage({super.key, this.animation = true});
+  bool animation;
 
   @override
   State<TitlePage> createState() => _TitlePageState();
@@ -14,7 +15,6 @@ class _TitlePageState extends State<TitlePage> {
   final scrollController = ScrollController();
   late bool initedPage;
   late int titleVelocity;
-  bool whiteNoise = false;
 
   initAnimation() async {
     initedPage = false;
@@ -27,19 +27,17 @@ class _TitlePageState extends State<TitlePage> {
     setState(() {});
   }
 
-  reload() async {
-    whiteNoise = true;
-    setState(() {});
-    await Future.delayed(const Duration(milliseconds: 50));
-    whiteNoise = false;
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
     titleVelocity = 300;
-    initAnimation();
+    if (widget.animation){
+      initAnimation();
+    } else {
+      initedPage = true;
+      titleVelocity = 10;
+      setState(() {});
+    }
   }
 
   @override
@@ -60,12 +58,7 @@ class _TitlePageState extends State<TitlePage> {
                   borderRadius:
                       BorderRadius.vertical(bottom: Radius.circular(15)),
                 ),
-                child: GestureDetector(
-                  onTap: () {
-                    reload();
-                  },
-                  child: TitleLogo(animation: true),
-                ),
+                child: TitleLogo(animation: widget.animation),
               ),
               Flexible(
                 child: Stack(
@@ -82,13 +75,12 @@ class _TitlePageState extends State<TitlePage> {
                         ),
                       ),
                     ),
-                    SideMenu(),
+                    const SideMenu(),
                   ],
                 ),
               ),
             ],
           ),
-          if (whiteNoise) Container(color: Colors.white),
         ],
       ),
     );

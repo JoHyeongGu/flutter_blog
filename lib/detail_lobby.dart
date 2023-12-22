@@ -12,15 +12,6 @@ class DetailLobby extends StatefulWidget {
 }
 
 class _DetailLobbyState extends State<DetailLobby> {
-  bool whiteNoise = false;
-
-  reload() async {
-    whiteNoise = true;
-    setState(() {});
-    await Future.delayed(const Duration(milliseconds: 50));
-    whiteNoise = false;
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +29,7 @@ class _DetailLobbyState extends State<DetailLobby> {
                   borderRadius:
                   BorderRadius.vertical(bottom: Radius.circular(15)),
                 ),
-                child: GestureDetector(
-                  onTap: () {
-                    reload();
-                  },
-                  child: TitleLogo(),
-                ),
+                child: TitleLogo(),
               ),
               Flexible(
                 child: Stack(
@@ -60,13 +46,12 @@ class _DetailLobbyState extends State<DetailLobby> {
                         ),
                       ),
                     ),
-                    SideMenu(),
+                    const SideMenu(),
                   ],
                 ),
               ),
             ],
           ),
-          if (whiteNoise) Container(color: Colors.white),
         ],
       ),
     );

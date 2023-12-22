@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/route.dart';
 
 class TitleLogo extends StatefulWidget {
   TitleLogo({super.key, this.animation = false});
@@ -38,26 +39,31 @@ class _TitleLogoState extends State<TitleLogo> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AnimatedOpacity(
-          opacity: logoState1 ? 1 : 0,
-          duration: const Duration(milliseconds: 300),
-          child: const Text(
-            '아홉,',
-            style: TextStyle(fontSize: 25),
+    return GestureDetector(
+      onTap: (){
+        Routes.navigateTo(context, '/home');
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AnimatedOpacity(
+            opacity: logoState1 ? 1 : 0,
+            duration: const Duration(milliseconds: 300),
+            child: const Text(
+              '아홉,',
+              style: TextStyle(fontSize: 25),
+            ),
           ),
-        ),
-        AnimatedOpacity(
-          opacity: logoState2 ? 1 : 0,
-          duration: const Duration(milliseconds: 300),
-          child: const Text(
-            ' 페이지',
-            style: TextStyle(fontSize: 25),
+          AnimatedOpacity(
+            opacity: logoState2 ? 1 : 0,
+            duration: const Duration(milliseconds: 300),
+            child: const Text(
+              ' 페이지',
+              style: TextStyle(fontSize: 25),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

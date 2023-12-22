@@ -1,7 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blog/detail_lobby.dart';
-import 'package:flutter_blog/test/page_test.dart';
 import 'package:flutter_blog/title_page.dart';
 
 class Routes {
@@ -12,22 +11,27 @@ class Routes {
       '/',
       handler: Handler(
         handlerFunc: (context, Map<String, dynamic> params) =>
-            const TitlePage(),
-    ),
+            TitlePage(animation: false),
+      ),
+    );
+    router.define(
+      '/home',
+      handler: Handler(
+        handlerFunc: (context, Map<String, dynamic> params) =>
+            TitlePage(animation: false),
+      ),
+    );
+    router.define(
+      '/intro',
+      handler: Handler(
+        handlerFunc: (context, Map<String, dynamic> params) => TitlePage(),
+      ),
     );
     router.define(
       '/detail',
       handler: Handler(
         handlerFunc: (context, Map<String, dynamic> params) {
           return DetailLobby(params['bc'][0], params['c'][0]);
-        },
-      ),
-    );
-    router.define(
-      '/test',
-      handler: Handler(
-        handlerFunc: (context, Map<String, dynamic> params) {
-          return const TestPage();
         },
       ),
     );

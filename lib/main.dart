@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_blog/route.dart';
+import 'package:flutter_blog/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:flutter_blog/route.dart';
+import 'package:flutter/material.dart';
 
 void main() async {
   await initApp();
@@ -10,6 +12,9 @@ void main() async {
 initApp () async {
   setPathUrlStrategy();
   Routes.configureRoutes();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,9 +25,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '아홉 페이지',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      initialRoute: '/',
+      initialRoute: '/intro',
       onGenerateRoute: Routes.router.generator,
     );
   }

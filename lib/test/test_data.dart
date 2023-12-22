@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-var testSideMenuData = <Map>[
+List<Map> testSideMenuData = [
   {
     'index': 0,
     'category': 'Develop',
